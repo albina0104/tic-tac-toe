@@ -3,7 +3,7 @@ import java.awt.*;
 import java.util.Random;
 
 public class TicTacToe {
-    private static final int BOARD_SIZE = 3;
+    static final int BOARD_SIZE = 3;
     private static final Cell[][] boardCells = new Cell[BOARD_SIZE][BOARD_SIZE];
     private static final JFrame frame = new JFrame("Tic-Tac-Toe");
     private static boolean isGameVsComputer = true;
@@ -179,10 +179,10 @@ public class TicTacToe {
         String whoseTurnLabelText;
         if (isGameVsComputer) {
             if (isPlayer1Turn) {
-                whoseTurnLabelText = (isComputerPlayer1 ? "Computer's turn!" : "Your turn!") + " (X)";
+                whoseTurnLabelText = (isComputerTurn() ? "Computer's turn!" : "Your turn!") + " (X)";
                 whoseTurn.setForeground(Cell.color1);
             } else {
-                whoseTurnLabelText = (isComputerPlayer1 ? "Your turn!" : "Computer's turn!") + " (O)";
+                whoseTurnLabelText = (isComputerTurn() ? "Computer's turn!" : "Your turn!") + " (O)";
                 whoseTurn.setForeground(Cell.color2);
             }
         } else {
@@ -198,24 +198,29 @@ public class TicTacToe {
     }
 
     public static boolean isComputerTurn() {
-        return (isPlayer1Turn && isComputerPlayer1) || (!isPlayer1Turn && !isComputerPlayer1);
+        return isGameVsComputer && (isPlayer1Turn == isComputerPlayer1);
     }
 
     private static void startNewGame() {
-        resetBoardForNewGame();
-
         if (isGameVsComputer) {
             Random random = new Random();
             int randomInt = random.nextInt(2);
             isComputerPlayer1 = randomInt == 1;
-
-            if (isComputerTurn()) {
-                computerOpponent.makeMove();
-            }
         }
+
+        resetBoardForNewGame();
+
+        if (isComputerTurn()) {
+            computerOpponent.makeMove();
+        }
+
     }
 
     public static ComputerOpponent getComputerOpponent() {
         return computerOpponent;
+    }
+
+    public static Cell[][] getBoardCells() {
+        return boardCells;
     }
 }
