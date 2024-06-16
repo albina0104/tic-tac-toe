@@ -7,7 +7,6 @@ public class Cell extends JLabel {
     private final int rowNumber, columnNumber;
     private CellState cellState = CellState.EMPTY;
     private static final Font font = new Font("SansSerif", Font.BOLD, 64);
-    private static boolean isPlayer1Turn = true;
     static final Color color1 = new Color(92, 37, 255);
     static final Color color2 = new Color(6, 193, 5);
 
@@ -33,7 +32,7 @@ public class Cell extends JLabel {
                 case O:
                     return;
                 case EMPTY:
-                    if (isPlayer1Turn) {
+                    if (TicTacToe.getIsPlayer1Turn()) {
                         cellState = CellState.X;
                         setText("X");
                     } else {
@@ -43,7 +42,7 @@ public class Cell extends JLabel {
                     }
                     boolean isGameOver = TicTacToe.checkIfGameOver((Cell) e.getSource());
                     if (!isGameOver) {
-                        isPlayer1Turn = !isPlayer1Turn;
+                        TicTacToe.setIsPlayer1Turn(!TicTacToe.getIsPlayer1Turn());
                     }
             }
         }
@@ -61,15 +60,7 @@ public class Cell extends JLabel {
         return cellState;
     }
 
-    public static boolean getIsPlayer1Turn() {
-        return isPlayer1Turn;
-    }
-
     public void setCellState(CellState cellState) {
         this.cellState = cellState;
-    }
-
-    public static void setIsPlayer1Turn(boolean isPlayer1Turn) {
-        Cell.isPlayer1Turn = isPlayer1Turn;
     }
 }

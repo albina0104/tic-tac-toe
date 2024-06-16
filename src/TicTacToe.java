@@ -5,6 +5,9 @@ public class TicTacToe {
     private static final int BOARD_SIZE = 3;
     private static final Cell[][] boardCells = new Cell[BOARD_SIZE][BOARD_SIZE];
     private static final JFrame frame = new JFrame("Tic-Tac-Toe");
+    private static boolean isGameVsComputer = true;
+    private static Level computerLevel = Level.BEGINNER;
+    private static boolean isPlayer1Turn = true;
 
     public static void main(String[] args) {
         buildGui();
@@ -36,7 +39,15 @@ public class TicTacToe {
 
         JMenu gameMenu = new JMenu("Game");
         JMenuItem newGameVsComputer = new JMenuItem("New game (vs computer)");
+        newGameVsComputer.addActionListener((event) -> {
+            isGameVsComputer = true;
+            resetBoardForNewGame();
+        });
         JMenuItem newGame2Players = new JMenuItem("New game (2 players)");
+        newGame2Players.addActionListener((event) -> {
+            isGameVsComputer = false;
+            resetBoardForNewGame();
+        });
         gameMenu.add(newGameVsComputer);
         gameMenu.add(newGame2Players);
         menuBar.add(gameMenu);
@@ -44,7 +55,9 @@ public class TicTacToe {
         JMenu levelMenu = new JMenu("Level");
         ButtonGroup levelGroup = new ButtonGroup();
         JRadioButtonMenuItem levelBeginner = new JRadioButtonMenuItem("Beginner", true);
+        levelBeginner.addActionListener((event) -> computerLevel = Level.BEGINNER);
         JRadioButtonMenuItem levelIntermediate = new JRadioButtonMenuItem("Intermediate");
+        levelIntermediate.addActionListener((event) -> computerLevel = Level.INTERMEDIATE);
         levelMenu.add(levelBeginner);
         levelGroup.add(levelBeginner);
         levelMenu.add(levelIntermediate);
@@ -102,7 +115,7 @@ public class TicTacToe {
         }
 
         if (isWin) {
-            String winMessage = Cell.getIsPlayer1Turn() ? "Player 1 won!" : "Player 2 won!";
+            String winMessage = TicTacToe.getIsPlayer1Turn() ? "Player 1 won!" : "Player 2 won!";
             JOptionPane.showMessageDialog(frame, winMessage, "Game over", JOptionPane.INFORMATION_MESSAGE);
             resetBoardForNewGame();
             return true;
@@ -136,6 +149,14 @@ public class TicTacToe {
                 boardCells[i][j].setForeground(Cell.color1);
             }
         }
-        Cell.setIsPlayer1Turn(true);
+        TicTacToe.setIsPlayer1Turn(true);
+    }
+
+    public static boolean getIsPlayer1Turn() {
+        return isPlayer1Turn;
+    }
+
+    public static void setIsPlayer1Turn(boolean isPlayer1Turn) {
+        TicTacToe.isPlayer1Turn = isPlayer1Turn;
     }
 }
