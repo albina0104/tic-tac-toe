@@ -27,6 +27,8 @@ public class Cell extends JLabel {
     private class PlayerTurnListener extends MouseAdapter {
         @Override
         public void mouseClicked(MouseEvent e) {
+            if (TicTacToe.isComputerTurn()) return;
+
             switch (cellState) {
                 case X:
                 case O:
@@ -36,6 +38,9 @@ public class Cell extends JLabel {
                     boolean isGameOver = TicTacToe.checkIfGameOver((Cell) e.getSource());
                     if (!isGameOver) {
                         TicTacToe.setIsPlayer1Turn(!TicTacToe.getIsPlayer1Turn());
+                        if (TicTacToe.isComputerTurn()) {
+                            TicTacToe.getComputerOpponent().makeMove();
+                        }
                     }
             }
         }

@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.Random;
 
 public class TicTacToe {
     private static final int BOARD_SIZE = 3;
@@ -13,6 +14,7 @@ public class TicTacToe {
 
     public static void main(String[] args) {
         buildGui();
+        startNewGame();
     }
 
     private static void buildGui() {
@@ -51,12 +53,12 @@ public class TicTacToe {
         JMenuItem newGameVsComputer = new JMenuItem("New game (vs computer)");
         newGameVsComputer.addActionListener((event) -> {
             isGameVsComputer = true;
-            resetBoardForNewGame();
+            startNewGame();
         });
         JMenuItem newGame2Players = new JMenuItem("New game (2 players)");
         newGame2Players.addActionListener((event) -> {
             isGameVsComputer = false;
-            resetBoardForNewGame();
+            startNewGame();
         });
         gameMenu.add(newGameVsComputer);
         gameMenu.add(newGame2Players);
@@ -132,7 +134,7 @@ public class TicTacToe {
         if (isWin) {
             String winMessage = TicTacToe.getIsPlayer1Turn() ? "Player 1 won!" : "Player 2 won!";
             JOptionPane.showMessageDialog(frame, winMessage, "Game over", JOptionPane.INFORMATION_MESSAGE);
-            resetBoardForNewGame();
+            startNewGame();
             return true;
         }
 
@@ -149,14 +151,14 @@ public class TicTacToe {
         }
         if (!isAtLeastOneCellEmpty) {
             JOptionPane.showMessageDialog(frame, "Draw!", "Game over", JOptionPane.INFORMATION_MESSAGE);
-            resetBoardForNewGame();
+            startNewGame();
             return true;
         }
 
         return false;
     }
 
-    static void resetBoardForNewGame() {
+    private static void resetBoardForNewGame() {
         for (int i = 0; i < BOARD_SIZE; i++) {
             for (int j = 0; j < BOARD_SIZE; j++) {
                 boardCells[i][j].setCellState(CellState.EMPTY);
@@ -195,7 +197,25 @@ public class TicTacToe {
         whoseTurn.setText(whoseTurnLabelText);
     }
 
-    private boolean isComputerTurn() {
+    public static boolean isComputerTurn() {
         return (isPlayer1Turn && isComputerPlayer1) || (!isPlayer1Turn && !isComputerPlayer1);
+    }
+
+    private static void startNewGame() {
+        resetBoardForNewGame();
+
+        if (isGameVsComputer) {
+            Random random = new Random();
+            int randomInt = random.nextInt(2);
+            isComputerPlayer1 = randomInt == 1;
+
+            if (isComputerTurn()) {
+                computerOpponent.makeMove();
+            }
+        }
+    }
+
+    public static ComputerOpponent getComputerOpponent() {
+        return computerOpponent;
     }
 }
