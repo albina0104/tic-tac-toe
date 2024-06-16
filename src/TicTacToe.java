@@ -11,6 +11,10 @@ public class TicTacToe {
     }
 
     private static void buildGui() {
+        JMenuBar menuBar = createJMenuBar();
+
+        frame.setJMenuBar(menuBar);
+
         JPanel panel = new JPanel(new GridLayout(BOARD_SIZE, BOARD_SIZE));
         for (int i = 0; i < BOARD_SIZE; i++) {
             for (int j = 0; j < BOARD_SIZE; j++) {
@@ -25,6 +29,28 @@ public class TicTacToe {
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
         frame.setVisible(true);
+    }
+
+    private static JMenuBar createJMenuBar() {
+        JMenuBar menuBar = new JMenuBar();
+
+        JMenu gameMenu = new JMenu("Game");
+        JMenuItem newGameVsComputer = new JMenuItem("New game (vs computer)");
+        JMenuItem newGame2Players = new JMenuItem("New game (2 players)");
+        gameMenu.add(newGameVsComputer);
+        gameMenu.add(newGame2Players);
+        menuBar.add(gameMenu);
+
+        JMenu levelMenu = new JMenu("Level");
+        ButtonGroup levelGroup = new ButtonGroup();
+        JRadioButtonMenuItem levelBeginner = new JRadioButtonMenuItem("Beginner", true);
+        JRadioButtonMenuItem levelIntermediate = new JRadioButtonMenuItem("Intermediate");
+        levelMenu.add(levelBeginner);
+        levelGroup.add(levelBeginner);
+        levelMenu.add(levelIntermediate);
+        levelGroup.add(levelIntermediate);
+        menuBar.add(levelMenu);
+        return menuBar;
     }
 
     static boolean checkIfGameOver(Cell thisTurn) {
