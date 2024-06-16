@@ -6,8 +6,10 @@ public class TicTacToe {
     private static final Cell[][] boardCells = new Cell[BOARD_SIZE][BOARD_SIZE];
     private static final JFrame frame = new JFrame("Tic-Tac-Toe");
     private static boolean isGameVsComputer = true;
+    private static boolean isComputerPlayer1 = false;
     private static Level computerLevel = Level.BEGINNER;
     private static boolean isPlayer1Turn = true;
+    private static JLabel whoseTurn;
 
     public static void main(String[] args) {
         buildGui();
@@ -15,19 +17,27 @@ public class TicTacToe {
 
     private static void buildGui() {
         JMenuBar menuBar = createJMenuBar();
-
         frame.setJMenuBar(menuBar);
 
-        JPanel panel = new JPanel(new GridLayout(BOARD_SIZE, BOARD_SIZE));
+        JPanel infoPanel = new JPanel();
+        whoseTurn = new JLabel("Your turn! (X)");
+        whoseTurn.setForeground(Cell.color1);
+        infoPanel.setOpaque(true);
+        infoPanel.setBackground(new Color(213, 231, 255));
+        whoseTurn.setFont(new Font("SansSerif", Font.BOLD, 20));
+        infoPanel.add(whoseTurn);
+
+        JPanel cellsPanel = new JPanel(new GridLayout(BOARD_SIZE, BOARD_SIZE));
         for (int i = 0; i < BOARD_SIZE; i++) {
             for (int j = 0; j < BOARD_SIZE; j++) {
                 boardCells[i][j] = new Cell(i, j);
-                panel.add(boardCells[i][j]);
+                cellsPanel.add(boardCells[i][j]);
             }
         }
 
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.getContentPane().add(panel);
+        frame.getContentPane().add(infoPanel, BorderLayout.NORTH);
+        frame.getContentPane().add(cellsPanel, BorderLayout.CENTER);
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
@@ -63,6 +73,7 @@ public class TicTacToe {
         levelMenu.add(levelIntermediate);
         levelGroup.add(levelIntermediate);
         menuBar.add(levelMenu);
+
         return menuBar;
     }
 
@@ -158,5 +169,25 @@ public class TicTacToe {
 
     public static void setIsPlayer1Turn(boolean isPlayer1Turn) {
         TicTacToe.isPlayer1Turn = isPlayer1Turn;
+
+        String whoseTurnLabelText;
+        if (isGameVsComputer) {
+            if (isPlayer1Turn) {
+                whoseTurnLabelText = (isComputerPlayer1 ? "Computer's turn!" : "Your turn!") + " (X)";
+                whoseTurn.setForeground(Cell.color1);
+            } else {
+                whoseTurnLabelText = (isComputerPlayer1 ? "Your turn!" : "Computer's turn!") + " (O)";
+                whoseTurn.setForeground(Cell.color2);
+            }
+        } else {
+            if (isPlayer1Turn) {
+                whoseTurnLabelText = "Player 1's turn! (X)";
+                whoseTurn.setForeground(Cell.color1);
+            } else {
+                whoseTurnLabelText = "Player 2's turn! (O)";
+                whoseTurn.setForeground(Cell.color2);
+            }
+        }
+        whoseTurn.setText(whoseTurnLabelText);
     }
 }
