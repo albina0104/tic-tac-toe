@@ -7,7 +7,7 @@ public class TicTacToe {
     private static final JFrame frame = new JFrame("Tic-Tac-Toe");
     private static boolean isGameVsComputer = true;
     private static boolean isComputerPlayer1 = false;
-    private static Level computerLevel = Level.BEGINNER;
+    private static ComputerOpponent computerOpponent = ComputerOpponentFactory.createComputerOpponent(Level.BEGINNER);
     private static boolean isPlayer1Turn = true;
     private static JLabel whoseTurn;
 
@@ -65,9 +65,13 @@ public class TicTacToe {
         JMenu levelMenu = new JMenu("Level");
         ButtonGroup levelGroup = new ButtonGroup();
         JRadioButtonMenuItem levelBeginner = new JRadioButtonMenuItem("Beginner", true);
-        levelBeginner.addActionListener((event) -> computerLevel = Level.BEGINNER);
+        levelBeginner.addActionListener((event) ->
+                computerOpponent = ComputerOpponentFactory.createComputerOpponent(Level.BEGINNER)
+        );
         JRadioButtonMenuItem levelIntermediate = new JRadioButtonMenuItem("Intermediate");
-        levelIntermediate.addActionListener((event) -> computerLevel = Level.INTERMEDIATE);
+        levelIntermediate.addActionListener((event) ->
+                computerOpponent = ComputerOpponentFactory.createComputerOpponent(Level.INTERMEDIATE)
+        );
         levelMenu.add(levelBeginner);
         levelGroup.add(levelBeginner);
         levelMenu.add(levelIntermediate);
@@ -189,5 +193,9 @@ public class TicTacToe {
             }
         }
         whoseTurn.setText(whoseTurnLabelText);
+    }
+
+    private boolean isComputerTurn() {
+        return (isPlayer1Turn && isComputerPlayer1) || (!isPlayer1Turn && !isComputerPlayer1);
     }
 }
