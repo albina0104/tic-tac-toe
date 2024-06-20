@@ -8,6 +8,7 @@ public class AdvancedComputerOpponent implements ComputerOpponent {
 
     @Override
     public void makeMove() {
-
+        // To be implemented if necessary.
+        // After implementation, the level needs to be added to the menu in TicTacToe.createJMenuBar
     }
 }
