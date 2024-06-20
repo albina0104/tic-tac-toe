@@ -35,13 +35,6 @@ public class Cell extends JLabel {
                     return;
                 case EMPTY:
                     occupyCell();
-                    boolean isGameOver = TicTacToe.checkIfGameOver((Cell) e.getSource());
-                    if (!isGameOver) {
-                        TicTacToe.setIsPlayer1Turn(!TicTacToe.getIsPlayer1Turn());
-                        if (TicTacToe.isComputerTurn()) {
-                            TicTacToe.getComputerOpponent().makeMove();
-                        }
-                    }
             }
         }
     }
@@ -70,6 +63,14 @@ public class Cell extends JLabel {
             cellState = CellState.O;
             setForeground(color2);
             setText("O");
+        }
+
+        boolean isGameOver = TicTacToe.checkIfGameOver(this);
+        if (!isGameOver) {
+            TicTacToe.setIsPlayer1Turn(!TicTacToe.getIsPlayer1Turn());
+            if (TicTacToe.isComputerTurn()) {
+                TicTacToe.getComputerOpponent().makeMove();
+            }
         }
     }
 }

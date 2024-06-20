@@ -132,7 +132,12 @@ public class TicTacToe {
         }
 
         if (isWin) {
-            String winMessage = TicTacToe.getIsPlayer1Turn() ? "Player 1 won!" : "Player 2 won!";
+            String winMessage;
+            if (isGameVsComputer) {
+                winMessage = isComputerTurn() ? "Computer wins!" : "You win! Congratulations!";
+            } else {
+                winMessage = isPlayer1Turn ? "Player 1 wins!": "Player 2 wins!";
+            }
             JOptionPane.showMessageDialog(frame, winMessage, "Game over", JOptionPane.INFORMATION_MESSAGE);
             startNewGame();
             return true;
@@ -222,5 +227,9 @@ public class TicTacToe {
 
     public static Cell[][] getBoardCells() {
         return boardCells;
+    }
+
+    public static boolean getIsComputerPlayer1() {
+        return isComputerPlayer1;
     }
 }
